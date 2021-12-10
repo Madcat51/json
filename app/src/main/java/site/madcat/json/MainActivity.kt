@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.annotation.RequiresApi
 import com.google.gson.Gson
 import site.madcat.json.databinding.ActivityMainBinding
+
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.URL
@@ -17,9 +18,9 @@ import javax.net.ssl.HttpsURLConnection
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    val urlPath: String="https://api.github.com/users/kshalnov/repos"
+    //   val urlPath: String="https://api.github.com/users/kshalnov/repos"
 
-    // val urlPath: String="https://api.themoviedb.org/3/movie/top_rated?api_key=b46aa2f69329d4b3b5e8d2e1ea6b7886&language=ru-RU"
+    val urlPath: String="https://api.themoviedb.org/3/discover/movie?&sort_by=popularity.desc&api_key=b46aa2f69329d4b3b5e8d2e1ea6b7886"
     private val gson by lazy { Gson() }
 
 
@@ -42,15 +43,16 @@ class MainActivity : AppCompatActivity() {
                     val result=reader.readLines().toString()
 
 
-                    val resJson=gson.fromJson(result, Array<Array<MovieEntity>>::class.java)
+                    val resJson=gson.fromJson(result,Array<MovieEntity>::class.java)
+
                     val sBuilder=StringBuilder()
 
-                    resJson.forEach { array ->
-                        array.forEach {
+                   resJson.forEach {
                             sBuilder.append(it.toString())
-                        }
+
                     }
-                    runOnUiThread { binding.textView.text=result }
+
+                    runOnUiThread { binding.textView.text= result }
 
                 } finally {
                     urlConnection?.disconnect()
