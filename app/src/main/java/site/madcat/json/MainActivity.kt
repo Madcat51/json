@@ -39,8 +39,6 @@ class MainActivity : AppCompatActivity() {
                 val url=URL(urlPath)
                 val urlConnection=url.openConnection() as HttpsURLConnection
                 try {
-
-
                     urlConnection.requestMethod="GET"
                     urlConnection.readTimeout=5000
                     val reader=
@@ -48,18 +46,11 @@ class MainActivity : AppCompatActivity() {
                     val result=reader.readLines().toString()
                     val sBuilder=StringBuilder()
 
-
                     var listResult=gson.fromJson(result, Array<MovieEntity>::class.java)
                     listResult.forEach {
-                        sBuilder.append(it.toString())
-
+                        var listMovie=it.results
+                        listMovie.forEach { sBuilder.appendLine(it.original_title + " " + it.overview) }
                     }
-
-
-
-
-
-
                     runOnUiThread { binding.textView.text=sBuilder }
 
                 } finally {
